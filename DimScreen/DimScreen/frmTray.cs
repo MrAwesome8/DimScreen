@@ -1,147 +1,183 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace DimScreen
-{
-    public partial class frmTray : Form
-    {
-        // list of overlays currently displayed
-        private System.Collections.Generic.List<frmMain> overlays = new System.Collections.Generic.List<frmMain>();
+namespace DimScreen {
+    public partial class frmTray : Form {
+        private frmMain[] overlays;
+        private bool[] activeMonitors;
 
-        private ToolStripMenuItem lastMenuItem;
-
-        public frmTray()
-        {
-            InitializeComponent();
-
+        private void SetValuesOnSubItems(List<ToolStripMenuItem> items) {
+            //https://stackoverflow.com/a/32579262
+            items.ForEach(item => {
+                if(!"Skip".Equals(item.Tag)) {
+                    var dropdown = (ToolStripDropDownMenu)item.DropDown;
+                    if(dropdown != null) {
+                        dropdown.ShowImageMargin = false;
+                        SetValuesOnSubItems(item.DropDownItems.OfType<ToolStripMenuItem>().ToList());
+                    }
+                }
+            });
         }
 
-        private void configureOverlays(float initialValue)
-        {
-            // remove exiting overlays
+        public frmTray() {
+            InitializeComponent();
+            contextMenuStrip1.Renderer = new DarkMenu(new DarkMenuColorTable());
+
+            SetValuesOnSubItems(contextMenuStrip1.Items.OfType<ToolStripMenuItem>().ToList());
+        }
+
+        private void configureOverlays(float initialValue) {
             clearOverlays();
 
-            // add screens if they don't already exist
-            if (overlays.Count != Screen.AllScreens.Length)
-            {
-                // apply dimness onto all screens
-                foreach (var screen in Screen.AllScreens)
-                {
-                    frmMain overlay = new frmMain();
-                    overlay.Dimness = 0;
-                    overlay.Area = screen.WorkingArea;
+            if(overlays == null || overlays.Length != Screen.AllScreens.Length) {
+                int i = 0;
+
+                activeMonitors = new bool[Screen.AllScreens.Length];
+                overlays = new frmMain[Screen.AllScreens.Length];
+                foreach(var screen in Screen.AllScreens) {
+                    frmMain overlay = new frmMain {
+                        Dimness = 0,
+                        Area = screen.WorkingArea
+                    };
                     overlay.Show();
 
-                    // add to list of overlays
-                    overlays.Add(overlay);
+                    overlays[i] = overlay;
+                    activeMonitors[i] = true;
+
+                    ToolStripMenuItem monitor = new ToolStripMenuItem($"Monitor {++i}") {
+                        Checked = true,
+                        CheckState = CheckState.Checked,
+                        CheckOnClick = true
+                    };
+                    monitor.CheckStateChanged += Monitor_CheckStateChanged;
+                    monitorsToolStripMenuItem.DropDownItems.Add(monitor);
+
+                    monitor.MouseEnter += (o, e) => monitorsToolStripMenuItem.DropDown.AutoClose = false;
+                    monitor.MouseLeave += (o, e) => {
+                        monitorsToolStripMenuItem.DropDown.AutoClose = true;
+
+                        contextMenuStrip1.Show(); //fix hiding behind taskbar
+                    };
                 }
             }
 
-            foreach (frmMain form in overlays)
+            foreach(frmMain form in overlays) {
                 form.Dimness = initialValue;
+            }
         }
 
-        private void clearOverlays()
-        {
-            foreach (var form in overlays)
-                form.Dispose();
+        private void Monitor_CheckStateChanged(object sender, EventArgs e) {
+            for(int i = 0; i < activeMonitors.Length; ++i) {
+                var tmp = ((ToolStripMenuItem)monitorsToolStripMenuItem.DropDownItems[i]).CheckState == CheckState.Checked;
 
-            overlays.Clear();
+                if(activeMonitors[i] != tmp) {
+                    if(tmp) {
+                        overlays[i].Dim(dimnessBar.Value);
+                    } else {
+                        overlays[i].Dim(0.0f);
+                    }
+                    activeMonitors[i] = tmp;
+                }
+            }
         }
 
+        private void clearOverlays() {
+            if(overlays == null) { return; }
 
-        private void frmTray_Load(object sender, EventArgs e)
-        {
-            menuNormal.Click += numericMenus_Click;
-            menu10.Click += numericMenus_Click;
-            menu20.Click += numericMenus_Click;
-            menu30.Click += numericMenus_Click;
-            menu40.Click += numericMenus_Click;
-            menu50.Click += numericMenus_Click;
-            menu60.Click += numericMenus_Click;
-            menu70.Click += numericMenus_Click;
-            menu80.Click += numericMenus_Click;
-            menu90.Click += numericMenus_Click;
-            menu100.Click += numericMenus_Click;
+            foreach(var form in overlays) {
+                form.Close();
+            }
 
-            // get command line values
+            Array.Clear(overlays, 0, overlays.Length);
+        }
+
+        private void frmTray_Load(object sender, EventArgs e) {
             var arg = "";
             var args = Environment.GetCommandLineArgs();
-            if (args.Length > 1) arg = args[1];
+            if(args.Length > 1) {
+                arg = args[1];
+            }
 
-            //TEST: force command line arg to test
-            //arg = "50";
-
-            if (arg != "")
-            {
-                try
-                {
+            if(!string.IsNullOrEmpty(arg)) {
+                try {
                     var val = float.Parse(arg) / 100;
-                    if (val > 100 || val < 0) throw new Exception("Out of range");
+                    if(val > 100 || val < 0) {
+                        throw new Exception("Out of range");
+                    }
+
                     configureOverlays(val);
-                }
-                catch (Exception ex)
-                {
+                } catch(Exception) {
                     MessageBox.Show("Expecting number from 0 to 100 to represent percentage of dimming. 0 means no change, 100 being totally dark.");
                     configureOverlays(0);
                 }
-            }
-            else
-            {
+            } else {
                 configureOverlays(0);
             }
         }
 
-
-        private void menuExit_Click(object sender, EventArgs e)
-        {
-            //Display a Message box asking if the user wishes to exit.
-            DialogResult reply = MessageBox.Show("Are you sure you want to exit?", "Close?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            //If users answer was yes.
-            if (reply == DialogResult.Yes)
-            {
-                //Clean up any used memeory.
-                GC.Collect();
-
-                // remove all overlays
-                clearOverlays();
-
-                //Remove tray Icon
-                notifyIcon1.Dispose();
-
-                //Close the Application.
-                this.Dispose();
-            }
+        private void menuExit_Click(object sender, EventArgs e) {
+            clearOverlays();
+            Close();
         }
 
-        private void numericMenus_Click(object sender, EventArgs e)
-        {
-            var menuItem = (ToolStripMenuItem)sender;
-            
-            if (lastMenuItem != null)
-                lastMenuItem.Checked = false;
-
-            menuItem.Checked = true;
-
-            lastMenuItem = menuItem;
-
-            var value = float.Parse((menuItem.Tag.ToString()));
-
-            foreach (frmMain form in overlays)
-                form.Dimness = value / 100;
-        }
-
-        private void menuRestart_Click(object sender, EventArgs e)
-        {
+        private void Restart() {
             var exePath = Application.ExecutablePath;
             System.Diagnostics.Process.Start(exePath, (overlays[0].Dimness * 100).ToString());
             Application.Exit();
         }
 
-        private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
-        {
+        private void notifyIcon1_MouseClick(object sender, MouseEventArgs e) {
             contextMenuStrip1.Show();
+        }
+
+        private void dimnessBar_Scroll(object sender, EventArgs e) {
+            ChangeDimness();
+
+            contextMenuStrip1.Focus();
+        }
+
+        private void ChangeDimness() {
+            dimnessLbl.Text = $"Dimness: {dimnessBar.Value}%";
+
+            for(int i = 0; i < overlays.Length; ++i) {
+                if(activeMonitors[i]) {
+                    overlays[i].Dim(dimnessBar.Value);
+                } else {
+                    overlays[i].Dim(0.0f);
+                }
+            }
+        }
+
+        private void toolStripTextBox1_TextChanged(object sender, EventArgs e) {
+            var txt = toolStripTextBox1.Text;
+            if(int.TryParse(txt, out int value) && dimnessBar.HasRange(value)) {
+                dimnessBar.Value = value;
+                ChangeDimness();
+            }
+        }
+
+        private void toolStripTextBox2_TextChanged(object sender, EventArgs e) {
+            var txt = toolStripTextBox2.Text.TrimStart('#').Trim();
+            if(txt.Length > 6) { return; }
+
+            Color color = Color.Black;
+
+            if(Regex.Match(txt, "^[a-fA-F0-9]{1,6}$").Success) {
+                color = ColorTranslator.FromHtml($"#{txt.PadRight(6, '0')}");
+            } else {
+                var tmp = Color.FromName(txt);
+                if(tmp.IsKnownColor) {
+                    color = tmp;
+                }
+            }
+
+            foreach(frmMain form in overlays) {
+                form.BackColor = color;
+            }
         }
     }
 }

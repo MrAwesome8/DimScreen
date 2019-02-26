@@ -32,20 +32,17 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTray));
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.menuNormal = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu10 = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu20 = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu30 = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu40 = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu50 = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu60 = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu70 = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu80 = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu90 = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu100 = new System.Windows.Forms.ToolStripMenuItem();
+            this.dimnessLbl = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuRestart = new System.Windows.Forms.ToolStripMenuItem();
+            this.monitorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.colorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.customColorHexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripTextBox2 = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.dimnessBar = new DimScreen.TrackBarMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -60,124 +57,103 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuNormal,
-            this.menu10,
-            this.menu20,
-            this.menu30,
-            this.menu40,
-            this.menu50,
-            this.menu60,
-            this.menu70,
-            this.menu80,
-            this.menu90,
-            this.menu100,
+            this.dimnessLbl,
+            this.dimnessBar,
             this.toolStripSeparator1,
-            this.menuRestart,
+            this.monitorsToolStripMenuItem,
+            this.colorToolStripMenuItem,
+            this.toolStripSeparator2,
             this.menuExit});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(142, 296);
+            this.contextMenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.contextMenuStrip1.ShowImageMargin = false;
+            this.contextMenuStrip1.Size = new System.Drawing.Size(156, 149);
             // 
-            // menuNormal
+            // dimnessLbl
             // 
-            this.menuNormal.Name = "menuNormal";
-            this.menuNormal.Size = new System.Drawing.Size(141, 22);
-            this.menuNormal.Tag = "0";
-            this.menuNormal.Text = "0% (Normal)";
+            this.dimnessLbl.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripTextBox1});
+            this.dimnessLbl.Name = "dimnessLbl";
+            this.dimnessLbl.Size = new System.Drawing.Size(155, 22);
+            this.dimnessLbl.Text = "Dimness:";
             // 
-            // menu10
+            // toolStripMenuItem1
             // 
-            this.menu10.Name = "menu10";
-            this.menu10.Size = new System.Drawing.Size(141, 22);
-            this.menu10.Tag = "10";
-            this.menu10.Text = "10%";
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(160, 22);
+            this.toolStripMenuItem1.Text = "Custom Percent";
             // 
-            // menu20
+            // toolStripTextBox1
             // 
-            this.menu20.Name = "menu20";
-            this.menu20.Size = new System.Drawing.Size(141, 22);
-            this.menu20.Tag = "20";
-            this.menu20.Text = "20%";
-            // 
-            // menu30
-            // 
-            this.menu30.Name = "menu30";
-            this.menu30.Size = new System.Drawing.Size(141, 22);
-            this.menu30.Tag = "30";
-            this.menu30.Text = "30%";
-            // 
-            // menu40
-            // 
-            this.menu40.Name = "menu40";
-            this.menu40.Size = new System.Drawing.Size(141, 22);
-            this.menu40.Tag = "40";
-            this.menu40.Text = "40%";
-            // 
-            // menu50
-            // 
-            this.menu50.Name = "menu50";
-            this.menu50.Size = new System.Drawing.Size(141, 22);
-            this.menu50.Tag = "50";
-            this.menu50.Text = "50%";
-            // 
-            // menu60
-            // 
-            this.menu60.Name = "menu60";
-            this.menu60.Size = new System.Drawing.Size(141, 22);
-            this.menu60.Tag = "60";
-            this.menu60.Text = "60%";
-            // 
-            // menu70
-            // 
-            this.menu70.Name = "menu70";
-            this.menu70.Size = new System.Drawing.Size(141, 22);
-            this.menu70.Tag = "70";
-            this.menu70.Text = "70%";
-            // 
-            // menu80
-            // 
-            this.menu80.Name = "menu80";
-            this.menu80.Size = new System.Drawing.Size(141, 22);
-            this.menu80.Tag = "80";
-            this.menu80.Text = "80%";
-            // 
-            // menu90
-            // 
-            this.menu90.Name = "menu90";
-            this.menu90.Size = new System.Drawing.Size(141, 22);
-            this.menu90.Tag = "90";
-            this.menu90.Text = "90%";
-            // 
-            // menu100
-            // 
-            this.menu100.Name = "menu100";
-            this.menu100.Size = new System.Drawing.Size(141, 22);
-            this.menu100.Tag = "100";
-            this.menu100.Text = "100% (Black)";
+            this.toolStripTextBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(74)))), ((int)(((byte)(72)))));
+            this.toolStripTextBox1.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.toolStripTextBox1.Name = "toolStripTextBox1";
+            this.toolStripTextBox1.Size = new System.Drawing.Size(100, 23);
+            this.toolStripTextBox1.TextChanged += new System.EventHandler(this.toolStripTextBox1_TextChanged);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(138, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(152, 6);
             // 
-            // menuRestart
+            // monitorsToolStripMenuItem
             // 
-            this.menuRestart.Name = "menuRestart";
-            this.menuRestart.Size = new System.Drawing.Size(141, 22);
-            this.menuRestart.Text = "Restart";
-            this.menuRestart.Click += new System.EventHandler(this.menuRestart_Click);
+            this.monitorsToolStripMenuItem.Name = "monitorsToolStripMenuItem";
+            this.monitorsToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.monitorsToolStripMenuItem.Tag = "Skip";
+            this.monitorsToolStripMenuItem.Text = "Monitors";
+            // 
+            // colorToolStripMenuItem
+            // 
+            this.colorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.customColorHexToolStripMenuItem,
+            this.toolStripTextBox2});
+            this.colorToolStripMenuItem.Name = "colorToolStripMenuItem";
+            this.colorToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.colorToolStripMenuItem.Tag = "";
+            this.colorToolStripMenuItem.Text = "Color";
+            // 
+            // customColorHexToolStripMenuItem
+            // 
+            this.customColorHexToolStripMenuItem.Name = "customColorHexToolStripMenuItem";
+            this.customColorHexToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.customColorHexToolStripMenuItem.Text = "Custom Color Hex";
+            // 
+            // toolStripTextBox2
+            // 
+            this.toolStripTextBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(74)))), ((int)(((byte)(72)))));
+            this.toolStripTextBox2.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.toolStripTextBox2.Name = "toolStripTextBox2";
+            this.toolStripTextBox2.Size = new System.Drawing.Size(100, 23);
+            this.toolStripTextBox2.TextChanged += new System.EventHandler(this.toolStripTextBox2_TextChanged);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(152, 6);
             // 
             // menuExit
             // 
             this.menuExit.Name = "menuExit";
-            this.menuExit.Size = new System.Drawing.Size(141, 22);
+            this.menuExit.Size = new System.Drawing.Size(155, 22);
             this.menuExit.Text = "Exit";
             this.menuExit.Click += new System.EventHandler(this.menuExit_Click);
+            // 
+            // dimnessBar
+            // 
+            this.dimnessBar.AutoSize = false;
+            this.dimnessBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.dimnessBar.Name = "dimnessBar";
+            this.dimnessBar.Size = new System.Drawing.Size(104, 20);
+            this.dimnessBar.Text = "trackBarMenuItem1";
+            this.dimnessBar.Scroll += new System.EventHandler(this.dimnessBar_Scroll);
             // 
             // frmTray
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(116, 56);
+            this.ClientSize = new System.Drawing.Size(120, 56);
             this.ControlBox = false;
             this.Name = "frmTray";
             this.Opacity = 0D;
@@ -197,17 +173,14 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem menuExit;
-        private System.Windows.Forms.ToolStripMenuItem menuRestart;
-        private System.Windows.Forms.ToolStripMenuItem menuNormal;
-        private System.Windows.Forms.ToolStripMenuItem menu10;
-        private System.Windows.Forms.ToolStripMenuItem menu20;
-        private System.Windows.Forms.ToolStripMenuItem menu30;
-        private System.Windows.Forms.ToolStripMenuItem menu40;
-        private System.Windows.Forms.ToolStripMenuItem menu50;
-        private System.Windows.Forms.ToolStripMenuItem menu60;
-        private System.Windows.Forms.ToolStripMenuItem menu70;
-        private System.Windows.Forms.ToolStripMenuItem menu80;
-        private System.Windows.Forms.ToolStripMenuItem menu90;
-        private System.Windows.Forms.ToolStripMenuItem menu100;
+        private TrackBarMenuItem dimnessBar;
+        private System.Windows.Forms.ToolStripMenuItem dimnessLbl;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
+        private System.Windows.Forms.ToolStripMenuItem monitorsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem colorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem customColorHexToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox toolStripTextBox2;
     }
 }
