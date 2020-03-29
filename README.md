@@ -1,7 +1,7 @@
 DimScreen
 =========
 
-Allows you to dim your desktop if it's a bit to bright.
+Allows you to dim your desktop if it's a bit too bright.
 
 ![Preview](PREVIEW.png)
 
